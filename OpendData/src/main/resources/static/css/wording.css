@@ -1,0 +1,27 @@
+#csvTable {
+    display: none; 
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    margin-top: 15px;
+}
+
+.table-container {
+    max-width: 800px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: auto;
+    margin: auto;
+}
+
+.table-responsive {
+    max-width: 100%;
+    margin: auto;
+}
+
+.download_button {
+    display: inline-flex;
+}

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="UTF-8">
+ <title>Liste des données</title>
+ <link rel="stylesheet" th:href="@{/css/styles.css}" href="../css/styles.css">
+</head>
+<body>
+ <header th:replace="~{header.html}"></header>
+ <main>
+ <div class="data-container">
+    <!-- Partie Filtres et Recherche (Colonne de gauche) -->
+    <div class="sidebar">
+        <div class="search-container p-3">
+            <form id="searchForm" action="#" th:action="@{/search}" method="POST" enctype="multipart/form-data">
+                <input type="text" placeholder="Rechercher des données..." name="searchValue" id="searchValue"><br><br>
+                <button type="submit">Rechercher</button>
+            </form>
+        </div>
+
+        <!-- Placeholder pour les éléments de filtre -->
+        <div class="filters">
+            <h2>Filtres</h2>
+            <form id="filtersForm" th:action="@{/filter}" method="POST">
+                
+                <!-- Filtre Download (Nombre) -->
+                <label for="download">Téléchargements minimum</label><br>
+                <input type="number" name="download" id="download" min="0" placeholder="Ex. : 100"><br><br>
+                
+                <!-- Filtre License (Select) -->
+                <label for="license">Licence</label><br>
+                <select name="license" id="license">
+                    <option value="">Toutes les licences</option>
+                    <option th:each="l : ${licences}" th:value="${l.name}" th:text="${l.name}"></option>
+                </select><br><br>
+
+                <!-- Filtre Modification (Date) -->
+                <label for="modification">Date de modification</label><br>
+                <input type="date" name="modification" id="modification"><br><br>
+
+                <!-- Filtre Theme (Select) -->
+                <label for="theme">Thème</label><br>
+                <select name="theme" id="theme">
+                    <option value="">Tous les thèmes</option>
+                    <option th:each="s : ${subjects}" th:value="${s.name}" th:text="${s.name}"></option>
+                </select><br><br>
+
+                <!-- Filtre Territory (Select) -->
+                <label for="territory">Territoire</label><br>
+                <select name="territory" id="territory">
+                    <option value="">Tous les territoires</option>
+                    <option th:each="t : ${territories}" th:value="${t}" th:text="${t}"></option>
+                </select><br><br>
+
+                <!-- Filtre Langue (Select) -->
+                <label for="langue">Langue</label><br>
+                <select name="langue" id="langue">
+                    <option value="">Toutes les langues</option>
+                    <option th:each="l : ${languages}" th:value="${l}" th:text="${l}"></option>
+                </select><br><br>
+
+                <label for="csv">Exporter en CSV</label>
+                <input type="checkbox" id="csv" name="csv" value="csv"><br>
+
+                <label for="xml">Exporter en XML</label>
+                <input type="checkbox" id="xml" name="xml" value="xml"><br>
+                
+                <label for="pdf">Exporter en PDF</label>
+                <input type="checkbox" id="pdf" name="pdf" value="pdf"><br><br>
+
+                <!-- Bouton pour appliquer les filtres -->
+                <button type="submit">Appliquer les filtres</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Partie Cartes de données (Colonne de droite) -->
+    <div class="content">
+        <div class="card">
+            <div class="card-body">
+                <div th:text="${erreur}"></div>
+
+                <div class="grid-container">
+                    <div class="flip-card" th:each="s : ${search}">
+                        <a th:href="@{/wording/{id}(id=${s.id})}" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <!-- Face avant -->
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr>
+                                            <td id="blockTitle" class="card-name" th:text="${s.name}">Nom de l'élément</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="card-description" th:text="${s.descriptions}">Description de l'élément</td>
+                                        </tr>
+                                    </table>
+                                    <!-- Champs cachés -->
+                                    <input type="text" name="download" hidden="true" th:value="${s.download}">
+                                    <input type="text" name="license" hidden="true" th:value="${s.license}">
+                                    <input type="text" name="modification" hidden="true" th:value="${s.modification}">
+                                    <input type="text" name="theme" hidden="true" th:value="${s.theme.name}">
+                                    <input type="text" name="territory" hidden="true" th:value="${s.territory}">
+                                    <input type="text" name="langue" hidden="true" th:value="${s.langue}">
+                                    <input type="text" name="csv" hidden="true" th:value="${s.csv != null ? 'true' : 'false'}">
+                                    <input type="text" name="xml" hidden="true" th:value="${s.xml != null ? 'true' : 'false'}">
+                                    <input type="text" name="pdf" hidden="true" th:value="${s.pdf != null ? 'true' : 'false'}">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 1</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 1 download : 50, date : 01/01/2021, theme : Démographie et Analyse du territoire, territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="50">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2021-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+    
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 2</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 2,download : 0,date : 01/01/2022, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="0">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2022-01-01">
+                                    <input type="text" name="theme" hidden="true" value="">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="false">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 3</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 3, download : 100,date : 01/01/2023,theme : Démographie et Analyse du territoire,  territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="100">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2023-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="false">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 4</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 4 download : 15, date : 01/11/2021, theme : Démographie et Analyse du territoire, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="15">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2021-11-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="false">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+    
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 5</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 5,download : 30,date : 01/01/2022, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="30">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2022-01-01">
+                                    <input type="text" name="theme" hidden="true" value="">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 6</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 6, download : 100,date : 01/01/2024,theme : Démographie et Analyse du territoire,  territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="0">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2024-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 7</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 7 download : 50, date : 01/01/2021, theme : Démographie et Analyse du territoire, territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="50">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2021-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+    
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 8</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 8,download : 0,date : 01/01/2022, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="0">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2022-01-01">
+                                    <input type="text" name="theme" hidden="true" value="">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 9</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 9, download : 100,date : 01/01/2023,theme : Démographie et Analyse du territoire,  territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="100">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2023-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 10</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 10 download : 15, date : 01/11/2021, theme : Démographie et Analyse du territoire, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="15">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2021-11-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+    
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 11</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 11,download : 30,date : 01/01/2022, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="30">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2022-01-01">
+                                    <input type="text" name="theme" hidden="true" value="">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 12</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 12, download : 100,date : 01/01/2024,theme : Démographie et Analyse du territoire,  territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="0">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2024-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 13</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 13 download : 50, date : 01/01/2021, theme : Démographie et Analyse du territoire, territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="50">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2021-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+    
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 14</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 14,download : 0,date : 01/01/2022, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="0">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2022-01-01">
+                                    <input type="text" name="theme" hidden="true" value="">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 15</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 15, download : 100,date : 01/01/2023,theme : Démographie et Analyse du territoire,  territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="100">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2023-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 16</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 16 download : 15, date : 01/11/2021, theme : Démographie et Analyse du territoire, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="15">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2021-11-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+    
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 17</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 17,download : 30,date : 01/01/2022, territoire : Dijon Métropole</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="30">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2022-01-01">
+                                    <input type="text" name="theme" hidden="true" value="">
+                                    <input type="text" name="territory" hidden="true" value="Dijon Métropole">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="flip-card">
+                        <a href="#" class="flip-card-link">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <table class="card-table">
+                                        <tr><td id="blockTitle" class="card-name">Nom de l'élément 18</td></tr>
+                                        <tr><td class="card-description">Description de l'élément 18, download : 100,date : 01/01/2024,theme : Démographie et Analyse du territoire,  territoire : Longvic</td></tr>
+                                    </table>
+
+                                    <input type="text" name="download" hidden="true" value="0">
+                                    <input type="text" name="license" hidden="true" value="">
+                                    <input type="text" name="modification" hidden="true" value="2024-01-01">
+                                    <input type="text" name="theme" hidden="true" value="Démographie et Analyse du territoire">
+                                    <input type="text" name="territory" hidden="true" value="Longvic">
+                                    <input type="text" name="langue" hidden="true" value="">
+                                    <input type="text" name="csv" hidden="true" value="true">
+                                    <input type="text" name="xml" hidden="true" value="true">
+                                    <input type="text" name="pdf" hidden="true" value="true">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
+    
+                </div>
+                <div class="pagination"></div>
+            </div>
+        </div>
+    </div>
+ </div>
+ </main>
+ <footer th:replace="footer.html"></footer>
+ <script src="js/search.js"></script>
+</body>
+</html>

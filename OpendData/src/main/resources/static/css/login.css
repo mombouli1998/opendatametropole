@@ -1,0 +1,157 @@
+/* Style General pour le site web */
+body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    max-width: 400px;
+    margin: 100px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulaire - Style des champs */
+.form-outline {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Input style */
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 15px;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Pour les champs de texte avec icône de mot de passe */
+.password-container .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-container input.form-control {
+    flex: 1;
+    padding-right: 40px; /* Pour laisser de l'espace à l'icône */
+}
+
+.password-container button {
+    background: none;
+    border: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    cursor: pointer;
+    color: #777;
+    transition: color 0.3s ease;
+}
+
+.password-container button:hover {
+    color: #007bff;
+}
+
+/* Bouton de soumission */
+.btn-primary {
+    width: 100%;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Message d'erreur */
+#error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+/* Responsive adjustments pour les petits écrans */
+@media (max-width: 576px) {
+    .card {
+        width: 90%;
+        margin: 40px auto;
+    }
+
+    .form-control {
+        padding: 12px 10px;
+    }
+
+    .btn-primary {
+        font-size: 15px;
+    }
+}
+
+/* Conteneur du footer */
+.ods-front-footer {
+    display: flex;
+    justify-content: space-evenly; 
+    align-items: center;  
+    padding: 20px;
+    background-color: #d9e8e8f3;  
+     border-radius: 20px;  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.footer-logo {
+    height: 100px; 
+    width: auto;  
+}
+
+.footer-items {
+    display: flex;
+    gap: 70px; 
+}
+
+.footer-items a {
+    text-decoration: none;
+    color: #020202; 
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.footer-items a:hover {
+    color: #1A5276; 
+}
+
+footer p {
+    text-align: center;
+    color: #3b6b73;
+    margin-top: 20px;
+}
+

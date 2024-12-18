@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <title>Création de compte</title>
+</head>
+<body>
+    <header th:replace="header.html"></header>
+    <div class="form-box">
+        <form id="registrationForm" class="form" action="/register" method="post">
+            <label for="first_name">Nom:</label><br>
+            <input type="text" id="first_name" name="first_name" required><br><br>
+            
+            <label for="last_name">Prénom:</label><br>
+            <input type="text" id="last_name" name="last_name" required><br><br>
+            
+            <label for="email">Adresse mail :</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <div>
+                <label for="password">Mot de passe :</label><br>
+                <input type="password" id="password" name="password" required>
+                <button class="hiddenButton" type="button" id="togglePassword">👁️</button>
+            </div>
+
+            <br>
+
+            <div>
+                <label for="confirm_password">Confirmer le mot de passe :</label><br>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <button class="hiddenButton" type="button" id="toggleConfirmPassword">👁️</button>
+            </div>
+            
+            <br><br>
+            
+            <button class="submitButton" type="submit">S'inscrire</button>
+        </form>
+    </div>
+    <footer th:replace="footer.html"></footer>
+</body>
+<script src="js/register.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</html>

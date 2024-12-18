@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Licence Ouverte v2.0",
+        "description": "Permet la réutilisation des données librement, y compris à des fins commerciales. L'utilisateur doit mentionner la source des données et, si possible, fournir un lien vers la licence. Aucune autre restriction n'est imposée.",
+        "url": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf"
+    },
+    {
+        "name": "Open Database Licence",
+        "description": "Permet la copie, la distribution et l'utilisation des données, ainsi que la création d'œuvres dérivées. Toute base de données modifiée ou redistribuée doit conserver cette licence, et la source originale doit être attribuée.",
+        "url": "https://opendatacommons.org/licenses/odbl/1-0/"
+    },
+    {
+        "name": "Creative Commons",
+        "description": "Permet de partager (copier et redistribuer) et d'adapter (remixer, transformer et créer à partir) des données pour tout usage, y compris commercial. L'utilisateur doit attribuer les crédits au propriétaire des données d'une manière raisonnable, sans suggérer un soutien de sa part.",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+    }
+]

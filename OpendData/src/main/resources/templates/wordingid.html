@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Donnée</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/wording.css}">
+</head>
+<body>
+  <header th:replace="header.html"></header>
+
+<div class="container">
+    <div class="d-flex justify-content-around  ">
+        <div class="p-2">
+            <div class=" ods-front-footer bg-dark">
+                <div>
+                        <div class="mb-4 row">
+                            <label for="fname" class="col-md-3 col-form-label"><span class="text-white">Nom</span></label>
+                            <div class="col-md-9">
+                              <input type="text" id="fname" name="firstname" th:value="${wording.name}" class="form-control border-0" readonly>
+                            </div>
+                          </div>
+                      
+                          <div class="mb-3 row">
+                            <label for="lname" class="col-md-3 col-form-label"><span class="text-white"> Thème</span> </label>
+                            <div class="col-md-9">
+                              <input type="text" id="lname" name="lastname" class="form-control border-0" th:value="${wording.theme.name}"readonly>
+                            </div>
+                          </div>
+
+                          <div class="mb-3 row">
+                            <label for="licenceNameLabel" id="licenceNameLabel" class="col-md-3 col-form-label"><span class="text-white">Licence</span> </label>
+                            <div style="display: flex;" class="col-md-9">
+                              <input type="text" id="licenceName" name="lastname" class="form-control border-0" th:value="${wording.license}"readonly>
+                              <p style="margin-left: 5px;" class="text-white" id="detailsLicence"><u>?</u></p>
+                            </div>
+                              <span id="licenceDescription" th:each="licence : ${licences}" th:if="${licence.name == wording.license}" th:title="${licence.description}"></span>
+                              <span id="licenceUrl" th:each="licence : ${licences}" th:if="${licence.name == wording.license}" th:title="${licence.url}"></span>
+                          </div>
+                      
+                          <div class="mb-3 row">
+                            <label for="lname" class="col-md-3 col-form-label"> <span class="text-white">Télécharger</span></label>
+                            <div class="col-md-9">
+                              <input type="text" id="lname" name="lastname" class="form-control border-0" th:value="${wording.download}"readonly>
+                            </div>
+                          </div>
+
+                          <div class="mb-3 row">
+                            <label for="lname" class="col-md-3 col-form-label"><span class="text-white">Modifié</span> </label>
+                            <div class="col-md-9">
+                              <input type="text" id="lname" name="lastname" class="form-control border-0"  th:value="${formattedDate}" readonly>
+                            </div>
+                          </div>
+
+                          <div class="mb-3 row">
+                            <label for="lname" class="col-md-3 col-form-label"><span class="text-white"> Langue</span> </label>
+                            <div class="col-md-9">
+                              <input type="text" id="lname" name="lastname" class="form-control border-0" th:value="${wording.langue}"readonly>
+                            </div>
+                          </div>
+                          
+                      
+                          <div class="mb-3 row">
+                            <label for="subject" class="col-md-3 col-form-label"><span class="text-white">Description</span></label>
+                            <div class="col-md-9">
+                              <textarea id="subject" readonly name="subject" class="form-control" th:placeholder="${wording.descriptions}" style="height:200px"></textarea>
+                            </div>
+                          </div>
+                          <div class="mb-3 row">
+                            <label for="lname" class="col-md-3 col-form-label"><span class="text-white">Télécharger</span> </label>
+                            <div class="download_button col-md-9 ">
+                                  <div th:if="${wording.pdf != null}">
+                                      <form action="/wording/download/pdf" method="post">
+                                        <input type="hidden" name="id" th:value="${wording.id}" />
+                                        <button type="submit" class="btn btn-info">
+                                            <i class="bi bi-file-pdf"></i> PDF
+                                        </button>
+                                      </form>
+                                  </div>
+          
+                                  <div class="download_button"  th:if="${wording.csv != null || wording.xml != null}">
+
+                                    <form action="/wording/download/csv" method="post">
+                                      <input type="hidden" name="id" th:value="${wording.id}" />
+                                      <button type="submit" class="btn btn-info" th:if="${wording.csv != null || wording.xml != null}">
+                                          <i class="bi bi-filetype-csv"></i> CSV
+                                      </button>
+                                    </form>
+                            
+                                    <form action="/wording/download/xml" method="post">
+                                      <input type="hidden" name="id" th:value="${wording.id}" />
+                                      <button type="submit" class="btn btn-info" th:if="${wording.csv != null || wording.xml != null}">
+                                          <i class="bi bi-filetype-xml"></i> XML
+                                      </button>
+                                    </form>
+                            
+                                    <a th:if="${wording.csv != null || wording.xml != null}" th:href="@{/wording/download/json/{id}(id=${wording.id})}">
+                                        <button class="btn btn-info">
+                                            <i class="bi bi-filetype-json"></i> JSON
+                                        </button>
+                                    </a>
+                                    
+                                </div>
+                              </div>
+                          </div>
+
+                          <div sec:authorize="hasAuthority('ADMIN')">
+                            <div class="d-flex flex-wrap align-items-center mt-2">
+                              <form th:action="@{/wording/edit/pdf}" method="POST" class="me-2" enctype="multipart/form-data">
+                                  <input type="hidden" name="id" th:value="${wording.id}" />
+                                  <input type="file" name="pdf" accept=".pdf" required style="display:none;" onchange="this.form.submit();">
+                                  <button type="button" class="btn btn-warning" onclick="this.previousElementSibling.click();">
+                                      <i class="bi bi-file-pdf"></i> Modifier PDF
+                                  </button>
+                              </form>
+                              <form th:action="@{/wording/edit/csv}" method="POST" class="me-2" enctype="multipart/form-data">
+                                  <input type="hidden" name="id" th:value="${wording.id}" />
+                                  <input type="file" name="csv" accept=".csv" required style="display:none;" onchange="this.form.submit();">
+                                  <button type="button" class="btn btn-warning" onclick="this.previousElementSibling.click();">
+                                      <i class="bi bi-filetype-csv"></i> Modifier CSV
+                                  </button>
+                              </form>
+                              <form th:action="@{/wording/edit/xml}" method="POST" class="me-2" enctype="multipart/form-data">
+                                  <input type="hidden" name="id" th:value="${wording.id}" />
+                                  <input type="file" name="xml" accept=".xml" required style="display:none;" onchange="this.form.submit();">
+                                  <button type="button" class="btn btn-warning" onclick="this.previousElementSibling.click();">
+                                      <i class="bi bi-filetype-xml"></i> Modifier XML
+                                  </button>
+                              </form>
+                          </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-2">
+            <div class="d-flex justify-content-center">
+                <div th:if="${wording.csv != null || wording.xml != null}">
+                  <button class="btn btn-primary ms-2" id="showTableBtn">Afficher le csv</button>
+                </div>
+                <div th:if="${wording.pdf != null}">
+                    <button class="btn btn-primary ms-2" id="showpdf">Afficher le pdf</button>
+                </div>
+            </div>
+
+            <div id="pdf" th:if="${pdfBase64 != null}">
+            <embed type="application/pdf"
+                   th:src="${pdfBase64}"
+                   width="600" height="400" />
+           
+            </p>
+            </div>
+
+            <div class="table-container" th:if="${donneesCsv != null}">
+              <table class="table table-bordered mt-3 table-responsive" id="csvTable">
+                <thead class="thead-light">
+                <tr>
+                    <th th:each="entete : ${donneesCsv[0].keySet()}" th:text="${entete}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ligne : ${donneesCsv}">
+                    <td th:each="valeur : ${ligne.values()}" th:text="${valeur}"></td>
+                </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+</div>
+
+<footer th:replace="footer.html"></footer>
+</body>
+<script th:src="@{/js/wording.js}"></script>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail Open Data</title>
+    <link rel="icon" type="/image/png" href="Images/logoS.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <header th:replace="header.html"></header>
+    
+    <div class="header-content">
+        <div class="header-text">
+            <h1>Bienvenue sur le Portail Open Data de la Métropole</h1>
+            <p>Accédez, téléchargez, et explorez les données ouvertes de notre métropole.</p>
+            <a href="#jeux-de-donnees" class="btn-call-to-action">Explorez les données</a>
+        </div>
+
+        <div class="logo-container">
+            <img src="Images/ZYN.gif" alt="Logo ou GIF animé" class="main-logo">
+        </div>
+    </div>
+   <div class="search_content">
+        <div class="search-container">
+            <form action="#" th:action="@{/search}" method="POST" enctype="multipart/form-data">
+                <input type="text" placeholder="Rechercher des données..." name="name_theme">
+                <button type="submit" class="bg-dark">Rechercher</button>
+            </form>
+        </div>
+    </div>
+    <main>
+
+        <section id="jeux-de-donnees">
+            <h2>Jeux de données disponibles</h2>
+            <div class="dataset-list">
+                <div class="dataset-item">
+                    <i class="fas fa-users dataset-icon"></i> 
+                    <h3>Démographie et Analyse du territoire</h3>
+                    <p>Données sur la population et l'analyse du territoire.</p>
+                    <a href="/search" class="btn">Voir les données</a>
+                </div>
+                
+                <div class="dataset-item">
+                    <i class="fas fa-bus dataset-icon"></i> 
+                    <h3>Déplacements et Mobilités</h3>
+                    <p>Données sur les transports et les mobilités dans la ville.</p>
+                    <a href="/search" class="btn">Voir les données</a>
+                </div>
+                              
+            </div>
+        </section>
+
+        <section id="actualites">
+            <h2>Actualités</h2>
+            <div class="news-container">
+                <div class="news-item">
+                    <img src="Images/tram.jpeg" alt="News 1">
+                    <h3>Nouvelles initiatives pour les déplacements et mobilités à Dijon</h3>
+                    <p>Dans le cadre du programme Smart City de Dijon, de nouvelles initiatives pour les mobilités ont été mises en place. Le service DiviaMobilités continue de s’étendre avec des parcs à vélos intelligents et une carte de mobilité centralisée permettant de gérer l’accès aux transports en commun, aux vélos et au stationnement.</p>
+                    <a href="#" class="btn">En savoir plus</a>
+                </div>
+                <div class="news-item">
+                    <img src="Images/demographie-dijon.jpg" alt="News 2">
+                    <h3>Nouvelle mise à jour des données démographiques sur Dijon Métropole</h3>
+                    <p>Dijon Métropole a récemment mis à jour ses jeux de données démographiques dans le cadre de son portail Open Data. Ces nouvelles données incluent des informations détaillées sur l'évolution de la population, les tendances migratoires, ainsi que des analyses sur la répartition des âges et des logements.</p>
+                    <a href="#" class="btn">En savoir plus</a>
+                </div>
+            </div>
+        </section>
+        
+
+        <section id="stats">
+            <h2>Statistiques en temps réel</h2>
+            <canvas id="dataChart" width="10%" height="10%"></canvas>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="150">0</span>
+                    <p>Jeux de données</p>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="3000">0</span>
+                    <p>Téléchargements</p>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="50">0</span>
+                    <p>Contributeurs</p>
+                </div>
+            </div>
+        </section>
+        
+
+        <section id="api">
+            <h2>Accédez à l'API</h2>
+            <p>Développez vos applications grâce à notre API Open Data.</p>
+            <a href="#" class="btn">En savoir plus sur l'API</a>
+        </section>
+
+        <section id="mapSection">
+            <h2>Carte des données géographiques</h2>
+            <div id="map" style="height: 300px;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="ods-front-footer">
+            <img alt="logo" src="Images/logoS.png" class="footer-logo"/>
+
+            <div class="footer-items"> 
+                <a class="ods-front-footer__legal ods-front-footer__link" href="#">Conditions d'utilisation</a>
+                <a class="ods-front-footer__legal ods-front-footer__link" href="#">Politique de confidentialité</a>
+                <a class="c-bp" href="#">Contact</a>
+            </div>
+        </div>
+    
+        <p>&copy; 2024 Métropole - Portail Open Data</p>
+    </footer>
+    
+    <script src="js/accueil.js" defer></script>
+</body>
+</html>

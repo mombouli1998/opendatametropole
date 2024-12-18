@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajout d'une donnée</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/libelle.css}"  href="../static/css/libelle.css">
+    <link rel="icon" type="/image/png" href="Images/logoS.png">
+</head>
+<body>
+    <header th:replace="header.html"></header> 
+    <div class="container">
+        <div class="p-5" >
+            <div class="d-flex justify-content-center">
+                <div class=" ods-front-footer">
+                    <form action="#" th:action="@{/wording}" method="POST" id="form_wording_add" enctype="multipart/form-data">
+                        <div data-mdb-input-init class="mb-2">
+                            <label class="form-label d-flex justify-content-center" for="form6Example5"><span >Nom des données</span></label>
+                            <input type="text" id="form6Example5" name="name" class="form-control" required />
+                        </div>
+        
+                        <div class="mb-2">
+                            <label for="exampleFormControlTextarea1" class="form-label d-flex justify-content-center"><span >Descriptions</span></label>
+                            <textarea class="form-control" name="descriptions" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+        
+                        <div class="mb-2">
+                            <label for="sujetSelect" class="form-label d-flex justify-content-center"><span>Thème</span></label>
+                            <select class="form-select" name="Theme" id="sujetSelect" aria-label="Sélectionner un thème" required>
+                                <option value="" disabled selected>Sélectionnez un thème</option> <!-- Option par défaut -->
+                                <option th:each="Theme : ${S}" th:value="${Theme.name}" th:text="${Theme.name}"></option>
+                            </select>
+                        </div>
+        
+                        <div class="mb-2">
+                            <label for="exampleFormControlTextarea1" class="form-label d-flex justify-content-center"><span >Langue</span></label>
+                            <input class="form-control" name="language" id="language" required>
+                        </div>
+        
+                        <div class="mb-2">
+                            <label for="dateInput" class="form-label d-flex justify-content-center"><span >License</span></label>
+                            <select class="form-select" name="license" id="sujetSelect" aria-label="Sélectionner une licence" required>
+                                <option value="" disabled selected>Sélectionnez une Licence</option> <!-- Option par défaut -->
+                                <option th:each="License : ${licences}" th:value="${License.name}" th:text="${License.name}"></option>
+                            </select>
+                        </div>
+        
+                        <div class="mb-2">
+                            <label for="cityInput" class="form-label d-flex justify-content-center"><span >Ville</span></label>
+                            <input type="text" id="cityInput" name="city" class="form-control" required />
+                        </div>
+        
+        
+                        <div class="d-flex justify-content-center mb-2"><span >Ajout de Fichier</span></div>
+        
+                        <div class="d-flex justify-content-center mb-2">
+                            <div class="file-upload-wrapper ms-3">
+                                <button type="button" class="file-upload-button">PDF</button>
+                                <input type="file" id="fileUpload" name="pdf" class="file-upload-input" accept=".pdf">
+                                <span class="file-name mt-1"></span>
+                            </div>
+                            <div class="file-upload-wrapper ms-3">
+                                <button type="button" class="file-upload-button">XML</button>
+                                <input type="file" id="fileUpload1" name="xml" class="file-upload-input" accept=".xml">
+                                <span class="file-name mt-1"></span>
+                            </div>
+                            <div class="file-upload-wrapper ms-3">
+                                <button type="button" class="file-upload-button">CSV</button>
+                                <input type="file" id="fileUpload3" name="csv" class="file-upload-input" accept=".csv">
+                                <span class="file-name mt-1"></span>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="dateInput" class="form-label d-flex justify-content-center"><span >Date de modification</span></label>
+                            <input type="date" id="dateInput" name="date" class="form-control" required />
+                        </div>
+        
+                        <div class="d-flex justify-content-center ">
+                            <input type="submit" class="btn btn-primary btn-sm mb-3" value="Ajouter données">
+                        </div>
+                    </form>
+        
+                <div th:text="${erreur}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="footer.html"></div>
+
+</body>
+<script src="js/wording_add.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</html>
